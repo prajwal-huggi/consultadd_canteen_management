@@ -25,5 +25,10 @@ public class Employee {
     private String password ;
 
     private double balance;
+
     private String role;
+
+    public Boolean isAdmin() {
+        return "ADMIN".equals(role);
+    }
 }
