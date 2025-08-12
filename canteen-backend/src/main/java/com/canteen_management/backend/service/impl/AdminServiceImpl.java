@@ -1,0 +1,87 @@
+package com.canteen_management.backend.service.impl;
+
+import com.canteen_management.backend.dto.EmployeeDTO;
+import com.canteen_management.backend.entity.Employee;
+import com.canteen_management.backend.repository.EmployeeRepository;
+import com.canteen_management.backend.service.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class AdminServiceImpl implements AdminService {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Override
+    public List<EmployeeDTO> getAllEmployees() {
+        return employeeRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public EmployeeDTO getEmployeeById(Long id) {
+        return employeeRepository.findById(id)
+                .map(this::convertToDTO)
+                .orElse(null);
+    }
+
+    @Override
+    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
+        Employee employee = convertToEntity(employeeDTO);
+        Employee savedEmployee = employeeRepository.save(employee);
+        return convertToDTO(savedEmployee);
+    }
+
+    @Override
+    public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO) {
+        return employeeRepository.findById(id)
+                .map(existing -> {
+                    existing.setName(employeeDTO.getName());
+                    existing.setEmail(employeeDTO.getEmail());
+                    existing.setBalance(employeeDTO.getBalance());
+                    existing.setRole(employeeDTO.getRole());
+                    Employee updated = employeeRepository.save(existing);
+                    return convertToDTO(updated);
+                })
+                .orElse(null);
+    }
+
+    @Override
+    public void deleteEmployee(Long id) {
+        employeeRepository.deleteById(id);
+    }
+
+    // Helper: Entity -> DTO
+    private EmployeeDTO convertToDTO(Employee employee) {
+        return EmployeeDTO.builder()
+                .id(employee.getId())
+                .name(employee.getName())
+                .email(employee.getEmail())
+                .balance(employee.getBalance())
+                .role(employee.getRole())
+                .build();
+//        return new EmployeeDTO(
+//                employee.getId(),
+//                employee.getName(),
+//                employee.getEmail(),
+//                employee.getBalance(),
+//                employee.getRole()
+//        );
+    }
+
+    // Helper: DTO -> Entity
+    private Employee convertToEntity(EmployeeDTO dto) {
+        Employee employee = new Employee();
+        employee.setName(dto.getName());
+        employee.setEmail(dto.getEmail());
+        employee.setBalance(dto.getBalance());
+        employee.setRole(dto.getRole());
+        return employee;
+    }
+}
