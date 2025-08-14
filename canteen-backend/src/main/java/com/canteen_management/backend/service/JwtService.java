@@ -1,7 +1,5 @@
 package com.canteen_management.backend.service;
 
-import com.canteen_management.backend.entity.Employee;
-
 import javax.crypto.SecretKey;
 
 public interface JwtService {

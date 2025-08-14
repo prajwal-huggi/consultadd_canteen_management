@@ -57,7 +57,6 @@ public class AdminServiceImpl implements AdminService {
         employeeRepository.deleteById(id);
     }
 
-    // Helper: Entity -> DTO
     private EmployeeDTO convertToDTO(Employee employee) {
         return EmployeeDTO.builder()
                 .id(employee.getId())
@@ -66,16 +65,8 @@ public class AdminServiceImpl implements AdminService {
                 .balance(employee.getBalance())
                 .role(employee.getRole())
                 .build();
-//        return new EmployeeDTO(
-//                employee.getId(),
-//                employee.getName(),
-//                employee.getEmail(),
-//                employee.getBalance(),
-//                employee.getRole()
-//        );
     }
 
-    // Helper: DTO -> Entity
     private Employee convertToEntity(EmployeeDTO dto) {
         Employee employee = new Employee();
         employee.setName(dto.getName());

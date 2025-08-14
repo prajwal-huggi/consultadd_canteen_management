@@ -13,7 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,11 +58,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public EmployeeDTO getCurrentUserProfile() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String username = authentication.getName();
-//        Employee employee = employeeRepository.findByUsername(username)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//        return modelMapper.map(employee, EmployeeDTO.class);
         return null ;
     }
 }
