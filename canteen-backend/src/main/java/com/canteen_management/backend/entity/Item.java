@@ -1,6 +1,7 @@
 package com.canteen_management.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "items")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Item {
 
     @Id
