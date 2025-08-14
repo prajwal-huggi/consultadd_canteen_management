@@ -32,16 +32,16 @@ public class JwtServiceImpl implements JwtService {
 
     public JwtServiceImpl(){}
 
-    public String generateToken(Employee employeeEmailPassword) {
-        Employee employee= employeeRepository.findByEmail( employeeEmailPassword.getEmail()).get();
+    public String generateToken(String employeeEmail) {
+        Employee employee= employeeRepository.findByEmail( employeeEmail).get();
         HashMap<String,Object>claims=new HashMap<>();
         claims.put("role", employee.isAdmin());
         return Jwts
                 .builder()
                 .claims()
                 .add(claims)
-                .subject( employeeEmailPassword.getEmail())
-                .issuer( employeeEmailPassword.getName())
+                .subject( employeeEmail)
+                .issuer( employeeEmail)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+60*30*1000))
                 .and()
