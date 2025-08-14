@@ -1,6 +1,7 @@
 package com.canteen_management.backend.service.impl;
 
 import com.canteen_management.backend.dto.EmployeeDTO;
+import com.canteen_management.backend.dto.ItemDTO;
 import com.canteen_management.backend.entity.Employee;
 import com.canteen_management.backend.entity.Item;
 import com.canteen_management.backend.repository.EmployeeRepository;
@@ -77,27 +78,62 @@ public class AdminServiceImpl implements AdminService {
         return employee;
     }
 
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
+    // ...................................................
+
+    private ItemDTO convertToItemDTO(Item item) {
+        return ItemDTO.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .price(item.getPrice())
+                .quantity(item.getQuantity())
+                .build();
     }
 
-    public Item getItemById(Long id) {
-        return itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+    private Item convertToItemEntity(ItemDTO dto) {
+        Item item = new Item();
+        item.setName(dto.getName());
+        item.setDescription(dto.getDescription());
+        item.setPrice(dto.getPrice());
+        item.setQuantity(dto.getQuantity());
+        return item;
     }
 
-    public Item createItem(Item item) {
-        return itemRepository.save(item);
+    @Override
+    public List<ItemDTO> getAllItems() {
+        return itemRepository.findAll()
+                .stream()
+                .map(this::convertToItemDTO)
+                .collect(Collectors.toList());
     }
 
-    public Item updateItem(Long id, Item updatedItem) {
-        Item item = getItemById(id);
-        item.setName(updatedItem.getName());
-        item.setDescription(updatedItem.getDescription());
-        item.setPrice(updatedItem.getPrice());
-        item.setQuantity(updatedItem.getQuantity());
-        return itemRepository.save(item);
+    @Override
+    public ItemDTO getItemById(Long id) {
+        return itemRepository.findById(id)
+                .map(this::convertToItemDTO)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
     }
 
+    @Override
+    public ItemDTO createItem(ItemDTO itemDTO) {
+        Item savedItem = itemRepository.save(convertToItemEntity(itemDTO));
+        return convertToItemDTO(savedItem);
+    }
+
+    @Override
+    public ItemDTO updateItem(Long id, ItemDTO updatedItemDTO) {
+        return itemRepository.findById(id)
+                .map(item -> {
+                    item.setName(updatedItemDTO.getName());
+                    item.setDescription(updatedItemDTO.getDescription());
+                    item.setPrice(updatedItemDTO.getPrice());
+                    item.setQuantity(updatedItemDTO.getQuantity());
+                    return convertToItemDTO(itemRepository.save(item));
+                })
+                .orElseThrow(() -> new RuntimeException("Item not found"));
+    }
+
+    @Override
     public void deleteItem(Long id) {
         itemRepository.deleteById(id);
     }
