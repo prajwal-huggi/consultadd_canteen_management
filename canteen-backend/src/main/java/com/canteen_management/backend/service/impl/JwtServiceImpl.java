@@ -38,7 +38,7 @@ public class JwtServiceImpl implements JwtService {
     public String generateToken(String employeeEmail) {
         Employee employee= employeeRepository.findByEmail( employeeEmail).get();
         HashMap<String,Object>claims=new HashMap<>();
-        claims.put("role", employee.isAdmin());
+        claims.put("role", employee.getRole());
         return Jwts
                 .builder()
                 .claims()
