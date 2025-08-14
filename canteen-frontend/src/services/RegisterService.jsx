@@ -1,4 +1,5 @@
 import axios from "axios";
+import { backend_url } from "./url";
 
 const RegisterService = async (email, name, password) => {
   try {
@@ -10,7 +11,7 @@ const RegisterService = async (email, name, password) => {
       password: password,
     };
     const response = await axios.post(
-      "http://localhost:8080/auth/signup/employee",
+      `${backend_url}/auth/signup/employee`,
       data
     );
     console.log("inside the registerService file");
