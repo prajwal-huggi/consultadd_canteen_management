@@ -7,6 +7,8 @@ import com.canteen_management.backend.entity.Item;
 import com.canteen_management.backend.repository.EmployeeRepository;
 import com.canteen_management.backend.repository.ItemRepository;
 import com.canteen_management.backend.service.AdminService;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,12 @@ public class AdminServiceImpl implements AdminService {
 
     private EmployeeRepository employeeRepository;
     private ItemRepository itemRepository ;
+
+    @Autowired
+    public  AdminServiceImpl(EmployeeRepository employeeRepository ,ItemRepository itemRepository ){
+        this.employeeRepository = employeeRepository;
+        this.itemRepository = itemRepository ;
+    }
 
     @Override
     public List<EmployeeDTO> getAllEmployees() {

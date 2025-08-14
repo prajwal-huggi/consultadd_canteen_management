@@ -8,18 +8,26 @@ import com.canteen_management.backend.repository.EmployeeRepository;
 import com.canteen_management.backend.repository.ItemRepository;
 import com.canteen_management.backend.repository.PurchaseRepository;
 import com.canteen_management.backend.service.EmployeeService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
-@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final ItemRepository itemRepository;
     private final PurchaseRepository purchaseRepository;
+
+    @Autowired
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, ItemRepository itemRepository, PurchaseRepository purchaseRepository) {
+        this.employeeRepository = employeeRepository;
+        this.itemRepository = itemRepository;
+        this.purchaseRepository = purchaseRepository;
+    }
 
     @Override
     public Purchase purchaseItem(Long employeeId, PurchaseRequest request) {
