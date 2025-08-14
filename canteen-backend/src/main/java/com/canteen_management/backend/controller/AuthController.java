@@ -6,7 +6,6 @@ import com.canteen_management.backend.dto.AuthResponse;
 import com.canteen_management.backend.dto.EmployeeDTO;
 import com.canteen_management.backend.service.AuthService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +32,7 @@ public class AuthController {
         return ResponseEntity.created(location)
                 .body(new ApiResponse<>(true, createdAdmin, "Admin registered successfully"));
     }
-
+    
 
     @PostMapping("/signup/employee")
     public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO employeeDTO) {
@@ -47,9 +46,4 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<EmployeeDTO> getProfile() {
-        EmployeeDTO profile = authService.getCurrentUserProfile();
-        return ResponseEntity.ok(profile);
-    }
 }
