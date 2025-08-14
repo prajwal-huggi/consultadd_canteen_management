@@ -46,27 +46,27 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/items")
     public List<Item> getAllItems() {
         return adminService.getAllItems();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/items/{id}")
     public Item getItemById(@PathVariable Long id) {
         return adminService.getItemById(id);
     }
 
-    @PostMapping
+    @PostMapping("/items")
     public Item createItem(@RequestBody Item item) {
         return adminService.createItem(item);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/items/{id}")
     public Item updateItem(@PathVariable Long id, @RequestBody Item updatedItem) {
         return adminService.updateItem(id, updatedItem);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/items/{id}")
     public ResponseEntity<?> deleteItem(@PathVariable Long id) {
         adminService.deleteItem(id);
         return ResponseEntity.ok().build();
