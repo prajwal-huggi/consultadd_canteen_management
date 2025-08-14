@@ -7,8 +7,10 @@ import com.canteen_management.backend.entity.Employee;
 import com.canteen_management.backend.repository.EmployeeRepository;
 import com.canteen_management.backend.service.AuthService;
 import com.canteen_management.backend.service.JwtService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final EmployeeRepository employeeRepository;
@@ -25,6 +26,15 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final ModelMapper modelMapper;
+
+    @Autowired
+    public AuthServiceImpl(EmployeeRepository employeeRepository, PasswordEncoder bCryptPasswordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, ModelMapper modelMapper) {
+        this.employeeRepository = employeeRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public EmployeeDTO registerAdmin(EmployeeDTO employeeDTO) {
@@ -54,7 +64,10 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtService.generateToken(authRequest.getEmail());
 
-        return new AuthResponse(token, "Login successful");
+        Employee employee = employeeRepository.findByEmail(authRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        String role = employee.getRole();
+        return new AuthResponse(token, "Login successful" , role);
     }
 
 
