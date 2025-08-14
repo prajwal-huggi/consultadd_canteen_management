@@ -29,11 +29,13 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public EmployeeDTO registerAdmin(EmployeeDTO employeeDTO) {
         Employee employee = modelMapper.map(employeeDTO, Employee.class);
+        employee.setId(null);
         employee.setPassword(bCryptPasswordEncoder.encode(employeeDTO.getPassword()));
         employee.setRole("ADMIN");
         Employee saved = employeeRepository.save(employee);
         return modelMapper.map(saved, EmployeeDTO.class);
     }
+
 
     @Override
     public EmployeeDTO registerEmployee(EmployeeDTO employeeDTO) {

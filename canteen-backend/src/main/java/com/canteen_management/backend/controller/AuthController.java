@@ -1,26 +1,39 @@
 package com.canteen_management.backend.controller;
 
+import com.canteen_management.backend.dto.ApiResponse;
 import com.canteen_management.backend.dto.AuthRequest;
 import com.canteen_management.backend.dto.AuthResponse;
 import com.canteen_management.backend.dto.EmployeeDTO;
 import com.canteen_management.backend.service.AuthService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping("/signup/admin")
-    public ResponseEntity<EmployeeDTO> registerAdmin(@RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<ApiResponse<EmployeeDTO>> registerAdmin(@RequestBody EmployeeDTO employeeDTO) {
         EmployeeDTO createdAdmin = authService.registerAdmin(employeeDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdAdmin);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdAdmin.getId())
+                .toUri();
+
+        return ResponseEntity.created(location)
+                .body(new ApiResponse<>(true, createdAdmin, "Admin registered successfully"));
     }
+
 
     @PostMapping("/signup/employee")
     public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO employeeDTO) {
