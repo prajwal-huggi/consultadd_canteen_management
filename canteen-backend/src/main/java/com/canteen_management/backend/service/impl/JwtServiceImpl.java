@@ -9,6 +9,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
@@ -18,17 +20,20 @@ import java.util.function.Function;
 
 @AllArgsConstructor
 @Service
+@Log4j2
 public class JwtServiceImpl implements JwtService {
 
     private EmployeeRepository employeeRepository;
     private String secreteKey ;
 
-    public JwtServiceImpl(@Value("${jwt.secret}") String secretKey , EmployeeRepository employeeRepository){
-        this.employeeRepository = employeeRepository ;
-        this.secreteKey = getSecreteKey();
+    @Autowired
+    public JwtServiceImpl(
+            @Value("${jwt.secret}") String secretKey,
+            EmployeeRepository employeeRepository
+    ) {
+        this.secreteKey = secretKey;
+        this.employeeRepository = employeeRepository;
     }
-
-    public JwtServiceImpl(){}
 
     public String generateToken(String employeeEmail) {
         Employee employee= employeeRepository.findByEmail( employeeEmail).get();
