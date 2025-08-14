@@ -16,28 +16,24 @@ public class AuthController {
 
     private final AuthService authService;
 
-    // Register Admin
     @PostMapping("/signup/admin")
     public ResponseEntity<EmployeeDTO> registerAdmin(@RequestBody EmployeeDTO employeeDTO) {
         EmployeeDTO createdAdmin = authService.registerAdmin(employeeDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAdmin);
     }
 
-    // Register Employee
     @PostMapping("/signup/employee")
     public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO employeeDTO) {
         EmployeeDTO createdEmployee = authService.registerEmployee(employeeDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
     }
 
-    // Login
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
         AuthResponse authResponse = authService.login(authRequest);
         return ResponseEntity.ok(authResponse);
     }
 
-    // Get logged-in user profile
     @GetMapping("/me")
     public ResponseEntity<EmployeeDTO> getProfile() {
         EmployeeDTO profile = authService.getCurrentUserProfile();
