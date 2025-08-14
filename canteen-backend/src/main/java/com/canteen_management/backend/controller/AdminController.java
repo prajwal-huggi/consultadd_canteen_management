@@ -1,6 +1,7 @@
 package com.canteen_management.backend.controller;
 
 import com.canteen_management.backend.dto.EmployeeDTO;
+import com.canteen_management.backend.entity.Item;
 import com.canteen_management.backend.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,8 +14,7 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private AdminService adminService;
+    private AdminService adminService;    
 
     // Get all employees
     @GetMapping("/employees")
@@ -49,5 +49,31 @@ public class AdminController {
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         adminService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public List<Item> getAllItems() {
+        return adminService.getAllItems();
+    }
+
+    @GetMapping("/{id}")
+    public Item getItemById(@PathVariable Long id) {
+        return adminService.getItemById(id);
+    }
+
+    @PostMapping
+    public Item createItem(@RequestBody Item item) {
+        return adminService.createItem(item);
+    }
+
+    @PutMapping("/{id}")
+    public Item updateItem(@PathVariable Long id, @RequestBody Item updatedItem) {
+        return adminService.updateItem(id, updatedItem);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteItem(@PathVariable Long id) {
+        adminService.deleteItem(id);
+        return ResponseEntity.ok().build();
     }
 }

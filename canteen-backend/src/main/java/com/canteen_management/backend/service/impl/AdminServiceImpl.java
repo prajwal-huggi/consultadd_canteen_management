@@ -2,9 +2,10 @@ package com.canteen_management.backend.service.impl;
 
 import com.canteen_management.backend.dto.EmployeeDTO;
 import com.canteen_management.backend.entity.Employee;
+import com.canteen_management.backend.entity.Item;
 import com.canteen_management.backend.repository.EmployeeRepository;
+import com.canteen_management.backend.repository.ItemRepository;
 import com.canteen_management.backend.service.AdminService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +14,8 @@ import java.util.stream.Collectors;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    @Autowired
     private EmployeeRepository employeeRepository;
+    private ItemRepository itemRepository ;
 
     @Override
     public List<EmployeeDTO> getAllEmployees() {
@@ -66,16 +67,8 @@ public class AdminServiceImpl implements AdminService {
                 .balance(employee.getBalance())
                 .role(employee.getRole())
                 .build();
-//        return new EmployeeDTO(
-//                employee.getId(),
-//                employee.getName(),
-//                employee.getEmail(),
-//                employee.getBalance(),
-//                employee.getRole()
-//        );
     }
 
-    // Helper: DTO -> Entity
     private Employee convertToEntity(EmployeeDTO dto) {
         Employee employee = new Employee();
         employee.setName(dto.getName());
@@ -83,5 +76,30 @@ public class AdminServiceImpl implements AdminService {
         employee.setBalance(dto.getBalance());
         employee.setRole(dto.getRole());
         return employee;
+    }
+
+    public List<Item> getAllItems() {
+        return itemRepository.findAll();
+    }
+
+    public Item getItemById(Long id) {
+        return itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+    }
+
+    public Item createItem(Item item) {
+        return itemRepository.save(item);
+    }
+
+    public Item updateItem(Long id, Item updatedItem) {
+        Item item = getItemById(id);
+        item.setName(updatedItem.getName());
+        item.setDescription(updatedItem.getDescription());
+        item.setPrice(updatedItem.getPrice());
+        item.setQuantity(updatedItem.getQuantity());
+        return itemRepository.save(item);
+    }
+
+    public void deleteItem(Long id) {
+        itemRepository.deleteById(id);
     }
 }
