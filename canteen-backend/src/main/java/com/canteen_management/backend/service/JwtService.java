@@ -5,7 +5,7 @@ import com.canteen_management.backend.entity.Employee;
 import javax.crypto.SecretKey;
 
 public interface JwtService {
-    String generateToken(Employee employeeEmailPassword);
+    String generateToken(String employeeEmail);
     SecretKey generateKey();
     String getSecreteKey();
     String extractUserName(String token);
