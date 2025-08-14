@@ -32,7 +32,6 @@ public class AuthController {
         return ResponseEntity.created(location)
                 .body(new ApiResponse<>(true, createdAdmin, "Admin registered successfully"));
     }
-    
 
     @PostMapping("/signup/employee")
     public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO employeeDTO) {
@@ -43,6 +42,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
         AuthResponse authResponse = authService.login(authRequest);
+        System.out.println("Helloooooo");
         return ResponseEntity.ok(authResponse);
     }
 

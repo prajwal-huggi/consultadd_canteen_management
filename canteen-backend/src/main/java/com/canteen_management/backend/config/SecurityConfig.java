@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, "/auth/signup/admin").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/signup/employee").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
