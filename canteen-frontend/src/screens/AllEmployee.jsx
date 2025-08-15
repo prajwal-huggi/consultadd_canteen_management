@@ -71,6 +71,7 @@ function AllEmployee() {
   const handleLogout = () => {
     console.log("Clicked on the logout button");
     localStorage.setItem("authToken", "");
+    localStorage.setItem("role", "");
     navigate("/login", { replace: true });
   };
 
