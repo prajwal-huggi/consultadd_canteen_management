@@ -8,5 +8,4 @@ public interface AuthService {
     EmployeeDTO registerAdmin(EmployeeDTO employeeDTO);
     EmployeeDTO registerEmployee(EmployeeDTO employeeDTO);
     AuthResponse login(AuthRequest authRequest);
-    EmployeeDTO getCurrentUserProfile();
 }

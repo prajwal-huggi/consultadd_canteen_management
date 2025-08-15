@@ -9,6 +9,7 @@ import User from './screens/User'
 import Register from "./screens/Register";
 import Checkout from "./screens/Checkout";
 import UserHistory from "./screens/UserHistory";
+import AllEmployee from "./screens/AllEmployee";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -23,6 +24,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/user" element={<User />} />
+        <Route path="/allEmployee" element={<AllEmployee />} />
       </Routes>
     </Router>
   )

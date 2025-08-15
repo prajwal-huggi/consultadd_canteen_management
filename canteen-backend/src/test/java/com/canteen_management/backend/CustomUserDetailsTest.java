@@ -4,7 +4,8 @@ import com.canteen_management.backend.entity.Employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.Collection;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CustomUserDetailsTest {
