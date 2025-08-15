@@ -26,6 +26,7 @@ function Login() {
         // Store token for authenticated requests
         if (response.data?.token) {
           localStorage.setItem("authToken", response.data.token);
+          localStorage.setItem("role", response.data.role);
         }
 
         const role = response.data?.role;

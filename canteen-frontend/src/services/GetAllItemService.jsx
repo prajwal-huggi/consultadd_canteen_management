@@ -1,17 +1,17 @@
 import axios from "axios";
 import { backend_url } from "./url";
 
-const DeleteEmployeeService = (id) => {
+const GetAllItemService = async () => {
   try {
     const token = localStorage.getItem("authToken");
-
-    const response = axios.delete(`${backend_url}/admin/employees/${id}`, {
+    const response = await axios.get(`${backend_url}/admin/items`, {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
+      }, 
     });
     console.log(response);
     return response;
+
   } catch (error) {
     console.error(error);
     return {
@@ -21,4 +21,4 @@ const DeleteEmployeeService = (id) => {
   }
 };
 
-export default DeleteEmployeeService;
+export default GetAllItemService;
