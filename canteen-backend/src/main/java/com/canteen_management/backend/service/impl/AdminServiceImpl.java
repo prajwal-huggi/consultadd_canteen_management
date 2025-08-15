@@ -145,4 +145,10 @@ public class AdminServiceImpl implements AdminService {
     public void deleteItem(Long id) {
         itemRepository.deleteById(id);
     }
+
+    @Override
+    public Employee findByEmail(String email) {
+        return employeeRepository.findByEmail(email)
+                .orElse(null);  // return null if no employee found, or throw exception if you prefer
+    }
 }
