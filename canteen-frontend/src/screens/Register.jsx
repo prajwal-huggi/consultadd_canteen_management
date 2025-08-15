@@ -1,5 +1,4 @@
 import { useState } from "react";
-import isValidEmail from "../components/isValidEmail";
 import isValidPassword from "../components/isValidPassword";
 import { useNavigate } from "react-router-dom";
 import RegisterService from "../services/RegisterService";
