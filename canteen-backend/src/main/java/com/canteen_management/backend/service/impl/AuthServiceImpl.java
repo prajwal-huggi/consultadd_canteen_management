@@ -67,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
         Employee employee = employeeRepository.findByEmail(authRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         String role = employee.getRole();
-        return new AuthResponse(token, "Login successful" , role);
+        return new AuthResponse(token, "Login successful" , role , employee.getId());
     }
 
 
