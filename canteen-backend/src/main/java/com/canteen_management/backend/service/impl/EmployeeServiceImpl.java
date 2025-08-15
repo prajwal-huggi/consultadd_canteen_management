@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -67,5 +68,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .build();
 
         return purchaseRepository.save(purchase);
+    }
+
+    @Override
+    public List<Purchase> getPurchaseHistory(Employee employee) {
+        return purchaseRepository.findByEmployee(employee);
     }
 }
