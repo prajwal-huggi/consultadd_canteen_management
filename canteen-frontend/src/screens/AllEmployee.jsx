@@ -72,6 +72,7 @@ function AllEmployee() {
     console.log("Clicked on the logout button");
     localStorage.setItem("authToken", "");
     localStorage.setItem("role", "");
+    localStorage.setItem("employeeId", "")
     navigate("/login", { replace: true });
   };
 

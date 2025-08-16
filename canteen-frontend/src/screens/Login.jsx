@@ -27,6 +27,7 @@ function Login() {
         if (response.data?.token) {
           localStorage.setItem("authToken", response.data.token);
           localStorage.setItem("role", response.data.role);
+          localStorage.setItem("employeeId", response.data.employeeId);
         }
 
         const role = response.data?.role;
@@ -38,7 +39,9 @@ function Login() {
           setMessage("Role not yet defined. Please contact support.");
         }
       } else {
-        setMessage(response?.data?.message || "Login failed. Please try again.");
+        setMessage(
+          response?.data?.message || "Login failed. Please try again."
+        );
       }
     } catch (error) {
       console.error("Login failed", error);
@@ -62,9 +65,7 @@ function Login() {
 
         {/* Message Display */}
         {message && (
-          <div className="mb-4 text-center text-sm text-red-500">
-            {message}
-          </div>
+          <div className="mb-4 text-center text-sm text-red-500">{message}</div>
         )}
 
         {/* Login Form */}

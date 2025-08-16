@@ -4,11 +4,37 @@ import { useNavigate } from "react-router-dom";
 import SaveItemService from "../services/SaveItemService";
 import GetAllItemService from "../services/GetAllItemService";
 import DeleteItemService from "../services/DeleteItemService";
+import GetEmployeeService from "../services/GetEmployeeService";
+import AddMoneyService from "../services/AddMoneyService";
 
 function User() {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const [totalCost, setTotalCost] = useState(0);
+  const [currentSalary, setCurrentSalary] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [email , setEmail] = useState("");
+  const [name, setName] = useState("");
+
+  const handleSalaryClick = () => setOpen(true);
+  const handleClose = () => {
+    setAmount(0);
+    setOpen(false);
+  };
+  const handleAddMoney = async() => {
+    console.log(`Current Salary: is ${currentSalary} and the added money is ${amount}`); 
+    const response= await AddMoneyService(email, name, currentSalary, amount);
+    // console.log("Amount to add:", amount); // Later you can replace this with your backend call
+    if(response.status === 200) {
+      alert("Money added successfully");
+      setCurrentSalary(response.data.balance);
+    } else {
+      alert("Failed to add money");
+    }
+    console.log(response);
+    handleClose();
+  };
 
   const [showAddItemForm, setShowAddItemForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,16 +48,21 @@ function User() {
 
   async function init() {
     try {
-      const response = await GetAllItemService();
+      let response = await GetAllItemService();
       if (response.status === 200) {
-        // Map backend quantity to totalItem and initialize selected quantity
         setProducts(
           response.data.map((item) => ({
             ...item,
-            totalItem: item.quantity, // stock quantity from backend
-            quantity: 0, // user-selected quantity
+            totalItem: item.quantity,
+            quantity: 0,
           }))
         );
+      }
+      response = await GetEmployeeService();
+      if (response.status === 200) {
+        setCurrentSalary(response.data.balance);
+        setEmail(response.data.email);
+        setName(response.data.name);
       }
     } catch (error) {
       console.error("Error fetching items:", error);
@@ -42,7 +73,6 @@ function User() {
     init();
   }, []);
 
-  // Reset selected quantity & total cost when returning to page
   useEffect(() => {
     setProducts((prev) =>
       prev.map((p) => ({
@@ -201,6 +231,11 @@ function User() {
         </button>
       </div>
 
+      {/* Salary Display */}
+      <div className="flex px-6">
+        <button onClick={handleSalaryClick}>₹ {currentSalary}</button>
+      </div>
+
       {/* Main Content */}
       <div className="min-h-screen flex flex-col items-center justify-start bg-gray-50 py-8">
         <div className="w-full max-w-lg bg-white p-6 rounded-2xl shadow-lg">
@@ -264,6 +299,41 @@ function User() {
           )}
         </div>
       </div>
+
+      {/* Floating Add Salary Modal */}
+      {open && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+              Add Money
+            </h2>
+
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Enter amount"
+              min="1"
+              className="w-full p-3 border border-gray-300 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={handleClose}
+                className="flex-1 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition duration-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddMoney}
+                className="flex-1 py-3 bg-indigo-500 text-white rounded-xl font-semibold hover:bg-indigo-600 transition duration-300"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Floating Form Modal */}
       {showAddItemForm && (
