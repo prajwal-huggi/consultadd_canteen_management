@@ -84,6 +84,7 @@ function User() {
   }, []);
 
   const filteredItems = products.filter((item) =>
+    (localStorage.getItem("role")=== 'EMPLOYEE'? item.totalItem > 0: true) &&
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -232,9 +233,9 @@ function User() {
       </div>
 
       {/* Salary Display */}
-      <div className="flex px-6">
+      {localStorage.getItem("role")=== 'EMPLOYEE' && <div className="flex px-6">
         <button onClick={handleSalaryClick}>₹ {currentSalary}</button>
-      </div>
+      </div>}
 
       {/* Main Content */}
       <div className="min-h-screen flex flex-col items-center justify-start bg-gray-50 py-8">
@@ -260,6 +261,7 @@ function User() {
                   key={product.id}
                   name={product.name}
                   quantity={product.quantity}
+                  totalItem={product.totalItem}
                   price={product.price}
                   onIncrease={() => increaseQuantity(product.id)}
                   onDecrease={() => decreaseQuantity(product.id)}
