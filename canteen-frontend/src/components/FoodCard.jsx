@@ -4,6 +4,7 @@ function FoodCard({
   name,
   price,
   quantity,
+  totalItem,
   onIncrease=()=>{},
   onDecrease= ()=>{},
   isItemOfTheDay= false,
@@ -21,6 +22,7 @@ function FoodCard({
             </span>
           )}
         </div>
+        <span className="block text-sm text-gray-600">total Item: {totalItem}</span>
         <span className="block text-sm text-gray-600">₹{price}</span>
       </div>
 
