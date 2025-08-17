@@ -1,33 +1,67 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Login from './screens/Login'
-import Admin from './screens/Admin'
-import User from './screens/User'
+import Login from "./screens/Login";
+import Admin from "./screens/Admin";
+import User from "./screens/User";
 import Register from "./screens/Register";
 import Checkout from "./screens/Checkout";
 import UserHistory from "./screens/UserHistory";
 import AllEmployee from "./screens/AllEmployee";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <Router>
       <Routes>
-        {/* <Route path="/" element={<Login />} /> */}
+        {/* Public routes */}
         <Route path="/login" element={<Login />} />
-        <Route path="/userHistory" element= {<UserHistory />} /> 
-        <Route path="/checkout" element={<Checkout />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/allEmployee" element={<AllEmployee />} />
+
+        {/* Employee routes */}
+        <Route
+          path="/user"
+          element={
+            <ProtectedRoute allowedRoles={["EMPLOYEE"]}>
+              <User />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute allowedRoles={["EMPLOYEE"]}>
+              <Checkout />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/userHistory"
+          element={
+            <ProtectedRoute allowedRoles={["EMPLOYEE"]}>
+              <UserHistory />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin routes */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/allEmployee"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AllEmployee />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
